@@ -3,10 +3,8 @@ from PIL import Image, ImageOps, ImageEnhance, ImageFilter
 import PIL
 import tensorflow as tf
 import numpy as np
-import os
-import cv2
-
 import urllib.request
+
 urllib.request.urlretrieve("https://drive.google.com/uc?export=download&id=19DI-ONYkg56f2ZjUAkWf55mD_jsW4e7A", "MobileNet_model.hdf5")
 
 #Eff_model = tf.keras.models.load_model('./eff_model.hdf5') 
