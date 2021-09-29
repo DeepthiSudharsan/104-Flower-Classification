@@ -11,9 +11,7 @@ lanel_dic = {"Toad lily" :  38, "Love in the mist":  61, "Monkshood":  75, "Azal
 st.title('104 Flowers - Garden of Eden')
 st.subheader('Flowers that the models have been trained with and are aware of (104 varities) :')
 st.info(list(lanel_dic.keys()))
-# creating a side bar 
 st.sidebar.info("Created By : Deepthi Sudharsan")
-# Adding an image to the side bar 
 st.sidebar.image("https://storage.googleapis.com/kaggle-datasets-images/514569/948457/98911e4f316dac443b1cbcaf50613840/dataset-card.png?t=2020-02-15-20-31-18", width=None)
 st.sidebar.subheader("Github Repo associated with the project : ")
 st.sidebar.markdown("[![Github](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJGtP-Pq0P67Ptyv3tB7Zn2ZYPIT-lPGI7AA&usqp=CAU)](https://github.com/DeepthiSudharsan/104-Flower-Classification)")
@@ -53,7 +51,8 @@ if(uploaded_file):
   st.write("Uploaded image")
   st.image(uploaded_file)
   X_val = validate_set(uploaded_file)
-  opt = st.selectbox("Select Model(s) ",["Select","MobileNet","ResNet","DenseNet","EfficientNet"])
+  # opt = st.selectbox("Select Model(s) ",["Select","MobileNet","ResNet","DenseNet","EfficientNet"])
+  opt = st.selectbox("Select Model(s) ",["Select","MobileNet","EfficientNet"])
   if(st.button("Predict")):
     st.write("Model Chosen :")
     st.info(opt)
@@ -67,14 +66,16 @@ if(uploaded_file):
       model_url = "https://drive.google.com/uc?export=download&id=19DI-ONYkg56f2ZjUAkWf55mD_jsW4e7A"
       model_name = "MobileNet_model.hdf5"
       download_check(model_url,model_name)
-    elif(opt == "DenseNet"):
-      model_url = "https://drive.google.com/uc?export=download&id=1VeUeDOCdlGNFI4SEfZ3S7WQlsxGzdICM"
-      model_name = "DenseNet_model.hdf5"
-      download_check(model_url,model_name)
-    elif(opt == "ResNet"):
-      model_url = "https://drive.google.com/uc?export=download&id=1B-0HPl48r8zDZREU5pu3OjJrRkzJYeWP"
-      model_name = "res_model.h5"
-      download_check(model_url,model_name)
+    # ResNet and DenseNet work locally, so can be uncommented to work locally
+    # elif(opt == "DenseNet"):
+    #   model_url = "https://drive.google.com/uc?export=download&id=1VeUeDOCdlGNFI4SEfZ3S7WQlsxGzdICM"
+    #   model_name = "DenseNet_model.hdf5"
+    #   download_check(model_url,model_name)
+    # elif(opt == "ResNet"):
+    #   model_url = "https://drive.google.com/uc?export=download&id=1B-0HPl48r8zDZREU5pu3OjJrRkzJYeWP"
+    #   model_name = "res_model.h5"
+    #   download_check(model_url,model_name)
+  st.write("If you would like to remove/delete the models that have been loaded to save up memroy, click the purge button below")
   if(st.button("Purge")):
     if(os.path.isfile("eff_model.hdf5")):
       os.remove("eff_model.hdf5")
@@ -84,5 +85,6 @@ if(uploaded_file):
       os.remove("DenseNet_model.hdf5")
     if(os.path.isfile("res_model.h5")):
       os.remove("res_model.h5")
+
 else:
   st.warning("No file has been chosen yet")
