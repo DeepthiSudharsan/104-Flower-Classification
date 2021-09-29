@@ -4,18 +4,27 @@ import PIL
 import tensorflow as tf
 import numpy as np
 import urllib.request
+import os.path
 
-urllib.request.urlretrieve("https://drive.google.com/uc?export=download&id=19DI-ONYkg56f2ZjUAkWf55mD_jsW4e7A", "MobileNet_model.hdf5")
+lanel_dic = {"Toad lily" :  38, "Love in the mist":  61, "Monkshood":  75, "Azalea":  54, "Fritillary":  6, "Silverbush":  17, "Canterbury bells":  8, "Stemless gentian":  59, "Pink primrose":  103, "Buttercup":  62, "Poinsettia":  92, "Desert-rose":  76, "Bird of paradise":  28, "Columbine":  16, "Cyclamen":  83, "Frangipani":  93, "Sweet pea":  19, "Siam tulip":  26, "Great masterwort":  89, "Hard-leaved pocket orchid":  22, "Marigold":  53, "Foxglove":  57, "Wild pansy":  9, "Windflower":  84, "Daisy":  64, "Tiger lily":  18, "Purple coneflower":  23, "Orange dahlia":  41, "Globe-flower":  43, "Lilac hibiscus":  85, "Fire lily":  3, "Balloon flower":  87, "Iris":  101, "Bishop of llandaff":  71, "Yellow iris":  51, "Garden phlox":  0, "Alpine sea holly":  21, "Geranium":  60, "Pink quill":  35, "Tree poppy":  44, "Spear thistle":  69, "Bromelia":  82, "Common dandelion":  50, "Sword lily":  97, "Peruvian lily":  91, "Carnation":  96, "Cosmos":  46, "Spring crocus":  25, "Lotus":  94, "Bolero deep blue":  74, "Anthurium":  79, "Rose":  96, "Water lily":  32, "Primula":  5, "Blackberry lily":  70, "Gaura":  95, "Trumpet creeper":  52, "Globe thistle":  7, "Sweet william":  40, "Hippeastrum":  15, "Snapdragon":  47, "Mexican petunia":  49, "Petunia":  15, "Gazania":  10, "King protea":  11, "Blanket flower":  34, "Common tulip":  102, "Giant white arum lily":  65, "Wild rose":  1, "Morning glory":  4, "Thorn apple":  98, "Pincushion flower":  39, "Tree mallow":  13, "Canna lily":  91, "Camellia":  99, "Pink-yellow dahlia":  63, "Bee balm":  80, "Wild geranium":  24, "Artichoke":  38, "Black-eyed susan":  58, "Ruby-lipped cattleya":  86, "Clematis":  55, "Prince of wales feathers":  81, "Hibiscus":  42, "Cautleya spicata":  67, "Lenten rose":  36, "Red ginger":  14, "Colt's foot":  90, "Mallow":  31, "Californian poppy":  68, "Corn poppy":  52, "Moon orchid":  45, "Passion flower":  48, "Grape hyacinth":  78, "Japanese anemone":  66, "Watercress":  72, "Cape flower":  29, "Osteospermum":  77, "Barberton daisy":  20, "Bougainvillea":  27, "Magnolia":  100, "Sunflower":  90, "Daffodil":  12, "Wallflower":  56}
 
-#Eff_model = tf.keras.models.load_model('./eff_model.hdf5') 
-Eff_model = tf.keras.models.load_model('./MobileNet_model.hdf5') 
-uploaded_file = st.file_uploader("Choose a file")
+st.title('104 Flowers - Garden of Eden')
+st.subheader('Flowers that the models have been trained with and are aware of (104 varities) :')
+st.info(list(lanel_dic.keys()))
+# creating a side bar 
+st.sidebar.info("Created By : Deepthi Sudharsan")
+# Adding an image to the side bar 
+st.sidebar.image("https://storage.googleapis.com/kaggle-datasets-images/514569/948457/98911e4f316dac443b1cbcaf50613840/dataset-card.png?t=2020-02-15-20-31-18", width=None)
+st.sidebar.subheader("Github Repo associated with the project : ")
+st.sidebar.markdown("[![Github](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJGtP-Pq0P67Ptyv3tB7Zn2ZYPIT-lPGI7AA&usqp=CAU)](https://github.com/DeepthiSudharsan/104-Flower-Classification)")
+
+st.write('Upload a beautiful flower image to predict the type of flower')
+ 
+uploaded_file = st.file_uploader("Choose a flower image ")
 
 def validate_set(img):
     X_valid = []
-    image = Image.open(img)
-    #image = ImageOps.grayscale(image)
-        
+    image = Image.open(img)     
     image = np.array(image)
     image_data_as_arr = np.asarray(image)
         
@@ -24,20 +33,45 @@ def validate_set(img):
     X_valid = tf.expand_dims(X_valid, axis=-1)
     return X_valid
 
-lanel_dic = {"toad lily" :  38, "love in the mist":  61, "monkshood":  75, "azalea":  54, "fritillary":  6, "silverbush":  17, "canterbury bells":  8, "stemless gentian":  59, "pink primrose":  103, "buttercup":  62, "poinsettia":  92, "desert-rose":  76, "bird of paradise":  28, "columbine":  16, "cyclamen":  83, "frangipani":  93, "sweet pea":  19, "siam tulip":  26, "great masterwort":  89, "hard-leaved pocket orchid":  22, "marigold":  53, "foxglove":  57, "wild pansy":  9, "windflower":  84, "daisy":  64, "tiger lily":  18, "purple coneflower":  23, "orange dahlia":  41, "globe-flower":  43, "lilac hibiscus":  85, "fire lily":  3, "balloon flower":  87, "iris":  101, "bishop of llandaff":  71, "yellow iris":  51, "garden phlox":  0, "alpine sea holly":  21, "geranium":  60, "pink quill":  35, "tree poppy":  44, "spear thistle":  69, "bromelia":  82, "common dandelion":  50, "sword lily":  97, "peruvian lily":  91, "carnation":  96, "cosmos":  46, "spring crocus":  25, "lotus":  94, "bolero deep blue":  74, "anthurium":  79, "rose":  96, "water lily":  32, "primula":  5, "blackberry lily":  70, "gaura":  95, "trumpet creeper":  52, "globe thistle":  7, "sweet william":  40, "hippeastrum":  15, "snapdragon":  47, "mexican petunia":  49, "petunia":  15, "gazania":  10, "king protea":  11, "blanket flower":  34, "common tulip":  102, "giant white arum lily":  65, "wild rose":  1, "morning glory":  4, "thorn apple":  98, "pincushion flower":  39, "tree mallow":  13, "canna lily":  91, "camellia":  99, "pink-yellow dahlia":  63, "bee balm":  80, "wild geranium":  24, "artichoke":  38, "black-eyed susan":  58, "ruby-lipped cattleya":  86, "clematis":  55, "prince of wales feathers":  81, "hibiscus":  42, "cautleya spicata":  67, "lenten rose":  36, "red ginger":  14, "colt's foot":  90, "mallow":  31, "californian poppy":  68, "corn poppy":  52, "moon orchid":  45, "passion flower":  48, "grape hyacinth":  78, "japanese anemone":  66, "watercress":  72, "cape flower":  29, "osteospermum":  77, "barberton daisy":  20, "bougainvillea":  27, "magnolia":  100, "sunflower":  90, "daffodil":  12, "wallflower":  56}
+def prediction(model_name):
+    model = tf.keras.models.load_model(model_name)
+    y_pred = model.predict(X_val)
+    Y_pred_classes = np.argmax(y_pred,axis=1)
+    keys = [k for k, v in lanel_dic.items() if v == Y_pred_classes]
+    st.subheader("The image is of the flower : ")
+    st.success(keys[0])
+
+def download_check(model_url,model_name):
+  if(not os.path.isfile(model_name)):
+    urllib.request.urlretrieve(model_url,model_name)
+  prediction(model_name)
 
 if(uploaded_file):
-  print(uploaded_file)
-  st.header("Image")
+  st.write("Uploaded image")
   st.image(uploaded_file)
   X_val = validate_set(uploaded_file)
-  y_pred = Eff_model.predict(X_val)
-  # print(y_pred)
-  Y_pred_classes = np.argmax(y_pred,axis=1)
-  # print(Y_pred_classes)
-  # print(np.argpartition(y_pred[0], -4)[-4:])
-  keys = [k for k, v in lanel_dic.items() if v == Y_pred_classes]
-  st.write(keys[0])
+  opt = st.selectbox("Select Model(s) ",["Select","MobileNet","ResNet","DenseNet","EfficientNet"])
+  if(st.button("Predict")):
+    st.write("Model Chosen :")
+    st.info(opt)
+    if(opt == "Select"):
+      st.warning("Select at least one model")
+    elif(opt == "EfficientNet"):
+      model_url = "https://drive.google.com/uc?export=download&id=1jaYVM8KrNO_QLbdRg25w8-yT-YkWhme5"
+      model_name = "eff_model.hdf5"
+      download_check(model_url,model_name)
+    elif(opt == "MobileNet"):
+      model_url = "https://drive.google.com/uc?export=download&id=19DI-ONYkg56f2ZjUAkWf55mD_jsW4e7A"
+      model_name = "MobileNet_model.hdf5"
+      download_check(model_url,model_name)
+    elif(opt == "DenseNet"):
+      model_url = "https://drive.google.com/uc?export=download&id=1VeUeDOCdlGNFI4SEfZ3S7WQlsxGzdICM"
+      model_name = "DenseNet_model.hdf5"
+      download_check(model_url,model_name)
+    elif(opt == "ResNet"):
+      model_url = "https://drive.google.com/uc?export=download&id=1B-0HPl48r8zDZREU5pu3OjJrRkzJYeWP"
+      model_name = "res_model.h5"
+      download_check(model_url,model_name)
 
-
-
+else:
+  st.warning("No file has been chosen yet")
