@@ -44,6 +44,9 @@ def prediction(model_name):
 def download_check(model_url,model_name):
   if(not os.path.isfile(model_name)):
     urllib.request.urlretrieve(model_url,model_name)
+  else:
+    st.write("Already loaded")
+    st.write(os.path.getsize(model_name))
   prediction(model_name)
 
 if(uploaded_file):
