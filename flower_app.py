@@ -75,6 +75,14 @@ if(uploaded_file):
       model_url = "https://drive.google.com/uc?export=download&id=1B-0HPl48r8zDZREU5pu3OjJrRkzJYeWP"
       model_name = "res_model.h5"
       download_check(model_url,model_name)
-
+  if(st.button("Purge")):
+    if(os.path.isfile("eff_model.hdf5")):
+      os.remove("eff_model.hdf5")
+    if(os.path.isfile("MobileNet_model.hdf5")):
+      os.remove("MobileNet_model.hdf5")
+    if(os.path.isfile("DenseNet_model.hdf5")):
+      os.remove("DenseNet_model.hdf5")
+    if(os.path.isfile("res_model.h5")):
+      os.remove("res_model.h5")
 else:
   st.warning("No file has been chosen yet")
